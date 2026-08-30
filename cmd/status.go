@@ -275,8 +275,10 @@ func getStatusCommand(
 	}
 	currentCmd := *progress.CurrentCommand
 	if strings.HasPrefix(currentCmd, "bash -c \"cd ") {
-		commaIdx := strings.Index(currentCmd, ";")
-		currentCmd = currentCmd[commaIdx+2 : len(currentCmd)-2]
+		semicolon := strings.Index(currentCmd, ";")
+		if semicolon >= 0 && semicolon+2 <= len(currentCmd)-2 {
+			currentCmd = currentCmd[semicolon+2 : len(currentCmd)-2]
+		}
 	}
 	return currentCmd
 }
