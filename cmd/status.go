@@ -109,6 +109,9 @@ func (o *statusOptions) run(cmd *cobra.Command) error {
 	if err != nil {
 		return err
 	}
+	if payload.Progress == nil {
+		payload.Progress = &operations.GetWorkflowStatusOKBodyProgress{}
+	}
 
 	header := buildStatusHeader(
 		o.verbose,
