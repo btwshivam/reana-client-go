@@ -139,6 +139,26 @@ func TestStatus(t *testing.T) {
 			},
 			wantError: true,
 		},
+		"progress absent": {
+			serverResponses: map[string]ServerResponse{
+				fmt.Sprintf(statusPathTemplate, workflowName): {
+					statusCode:   http.StatusOK,
+					responseFile: "status_no_progress.json",
+				},
+			},
+			args:     []string{"-w", workflowName, "-v", "--include-duration"},
+			expected: []string{"my_workflow", "created"},
+		},
+		"progress empty": {
+			serverResponses: map[string]ServerResponse{
+				fmt.Sprintf(statusPathTemplate, workflowName): {
+					statusCode:   http.StatusOK,
+					responseFile: "status_bare_progress.json",
+				},
+			},
+			args:     []string{"-w", workflowName, "-v", "--include-duration"},
+			expected: []string{"my_workflow", "queued"},
+		},
 	}
 
 	for name, params := range tests {
